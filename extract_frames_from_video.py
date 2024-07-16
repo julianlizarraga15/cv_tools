@@ -1,7 +1,7 @@
 import cv2
-import os
 import argparse
 from tqdm import tqdm
+from pathlib import Path
 
 def extract_frames(video_file, output_dir, interval=30, display=False):
     """
@@ -14,17 +14,20 @@ def extract_frames(video_file, output_dir, interval=30, display=False):
     interval: Interval between frames to extract.
     display: Whether to display the video frames.
     """
+    video_file = Path(video_file)
+    output_dir = Path(output_dir)
+
     print(f"Attempting to open video at: {video_file}")
 
     # Check if the video file actually exists
-    if not os.path.isfile(video_file):
+    if not video_file.is_file():
         print("The video file does not exist at the specified path!")
         return
 
-    if not os.path.isdir(output_dir):
-        os.makedirs(output_dir)
+    if not output_dir.is_dir():
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-    vidcap = cv2.VideoCapture(video_file)
+    vidcap = cv2.VideoCapture(str(video_file))
     if not vidcap.isOpened():
         print("Failed to open video file!")
         return
@@ -38,8 +41,8 @@ def extract_frames(video_file, output_dir, interval=30, display=False):
         while success:
             if frame is not None:
                 if count % interval == 0:
-                    frame_path = os.path.join(output_dir, f"{os.path.basename(video_file).split('.')[0]}_{saved_count + 1}.jpg")
-                    cv2.imwrite(frame_path, frame)
+                    frame_path = output_dir / f"{video_file.stem}_{saved_count + 1}.jpg"
+                    cv2.imwrite(str(frame_path), frame)
                     saved_count += 1
 
                 # Show the frame
