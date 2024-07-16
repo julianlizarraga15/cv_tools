@@ -41,7 +41,7 @@ def extract_frames(video_file, output_dir, interval=30, display=False):
         while success:
             if frame is not None:
                 if count % interval == 0:
-                    frame_path = output_dir / f"{video_file.stem}_{saved_count + 1}.jpg"
+                    frame_path = output_dir / f"{video_file.stem}_frame{saved_count + 1}.jpg"
                     cv2.imwrite(str(frame_path), frame)
                     saved_count += 1
 
