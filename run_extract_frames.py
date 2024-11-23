@@ -7,7 +7,7 @@ def main(clips_folder, output_folder, interval=30):
     Run extract_frames() for each video in a given folder.
     """
     for filename in os.listdir(clips_folder):
-        if filename.endswith(".mp4"):
+        if filename.endswith((".mp4", ".webm", ".mkv")):
             video_path = os.path.join(clips_folder, filename)
             extract_frames(video_path, output_folder, interval)
 
